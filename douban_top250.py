@@ -19,9 +19,12 @@ def find_movies(html_data):
 
     d = dict()
     for i in target:
-        rank = i.find_all("div",  class_="pic")[0].em.text
-        name = i.find_all("span", class_="title")[0].text
-        d[rank] = name
+        m_id = i.find_all("div",  class_="pic")[0].em.text
+        m_name = i.find_all("span", class_="title")[0].text
+        m_rating = i.find_all("span", class_="rating_num")[0].text
+        # m_quote = i.find_all("span", class_="inq")[0].text
+
+        d[m_id] = [m_name, m_rating]
     return d
 
 def main():
@@ -40,9 +43,10 @@ def main():
 
     print(movie_dict)
     f = open("douban_top250.txt", "w", encoding= "utf-8")
-    f.write("%s, %s\n" % ("ID", "Name"))
+    f.write("%s, %s, %s, %s\n" % ("ID", "Name", "Rating", "Quote"))
     for (k, v) in movie_dict.items():
-        f.write("%s, \"%s\"\n" % (k, v))
+        f.write("%s, \"%s\", \"%s\", \"%s\"\n" %
+               (k, v[0], v[1], ""))
     f.close()
 
 if __name__ == "__main__":
